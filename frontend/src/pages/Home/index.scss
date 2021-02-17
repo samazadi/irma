@@ -1,0 +1,12 @@
+@import '../../global.scss';
+
+.hero-section-wrapper {
+    .jumbotron {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 50% 20%;
+        border-bottom-right-radius: 50% 20%;
+        background-color: $navy;
+        color: $white;
+    }
+}

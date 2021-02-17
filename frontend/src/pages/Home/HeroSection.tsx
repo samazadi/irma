@@ -1,15 +1,28 @@
-import React from 'react';
+import './index.scss';
 
 const HeroSection = () => {
     return (
-        <div style={{ borderBottomLeftRadius: "50% 20%", borderBottomRightRadius: "50% 20%" }} className="jumbotron">
-            <h1 className="display-4">Hello, world!</h1>
-            <p className="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-            <hr className="my-4" />
-            <p>It uses utility classNamees for typography and spacing to space content out within the larger container.</p>
-            <p className="lead">
-                <a className="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-            </p>
+        <div className="hero-section-wrapper">
+            <div className="jumbotron">
+                <h1 className="display-4 text-center">Irma</h1>
+                <p className="lead text-center">Hogwarts Library Web Portal</p>
+
+                <div className="row">
+                    <div className="col-6 col-md-3 offset-md-4">
+                        <div className="input-group input-group-lg mb-3">
+                            <input type="text" className="form-control" placeholder="Book Name, ISBN, or ID" aria-label="UsernameBook Name, ISBN, or ID" aria-describedby="basic-addon1" />
+                        </div>
+
+                    </div>
+                    <div className="col-6 col-md-3">
+                        <p className="lead">
+                            <button className="btn btn-primary btn-lg">Search</button>
+                        </p>
+
+                    </div>
+                </div>
+
+            </div>
         </div>
     )
 }
