@@ -43,6 +43,42 @@ functions:
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_DDB_TABLE}
 
+  getBooks:
+    handler: src/api/getBook.handler
+    events:
+      - http:
+          method: get
+          path: library
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_DDB_TABLE}
+
+  updateBook:
+    handler: src/api/updateBook.handler
+    events:
+      - http:
+          method: patch
+          path: library/{id}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_DDB_TABLE}
+
+  deleteBook:
+    handler: src/api/deleteBook.handler
+    events:
+      - http:
+          method: delete
+          path: library/{id}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+        Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_DDB_TABLE}
+
 resources:
   Resources:
     IrmaDynamoDBTable:
