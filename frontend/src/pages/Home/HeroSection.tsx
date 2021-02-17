@@ -6,14 +6,19 @@ import './index.scss';
 
 const HeroSection = () => {
     const [searchInput, setSearchInput] = useState<string>("");
-    const [searchType, setSearchType] = useState<SearchTypeValues>("title");
+    const [searchType, setSearchType] = useState<SearchTypeValues>("TITLE");
 
     const handleSearchClick = (): void => {
-        searchForBook(searchInput);
+        if (!searchInput) return;
+        const searchResult = searchForBook(searchInput, searchType);
+        console.log("The result we got", searchResult);
+
+        
     }
 
-    const handleDropdownSelect = (e: string | null): void => {
-        console.log("dropdown select changed", e)
+    const handleDropdownSelect = (value: string | null): void => {
+        if (!value) return console.error('No dropdown value');
+        setSearchType(value as SearchTypeValues);
     }
 
     return (
@@ -33,9 +38,10 @@ const HeroSection = () => {
                             />
                             <DropdownButton
                                 as={InputGroup.Append}
-                                variant="outline-secondary"
-                                title="Dropdown"
+                                variant="primary"
+                                title={searchType}
                                 id="input-group-dropdown-2"
+                                style={{ minWidth: 100 }}
                                 onSelect={handleDropdownSelect}
                                 defaultValue={"title"}
                             >
