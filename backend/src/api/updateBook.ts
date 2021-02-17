@@ -1,20 +1,25 @@
-import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
 import 'source-map-support/register';
+import { APIGatewayProxyHandler, APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import BookService from '../services/BookService';
+import { Book } from '../models/Book';
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
-        const { title, author, isbn, description } = JSON.parse(event.body);
+        const id = event.pathParameters.id;
 
         const bookService = new BookService();
-        const book = await bookService.put(title, author, isbn, description);
+        const book: Partial<Book> = { ...JSON.parse(event.body), id }
+
+        const updatedBook = await bookService.update(book);
 
         return {
             statusCode: 200,
-            body: JSON.stringify({ book }, null, 2)
-        };
+            body: JSON.stringify({
+                book: updatedBook
+            })
+        }
     } catch (error) {
-        console.error(`Error in createBook: ${error}`);
+        console.error(`Error in updateBook: ${error}`);
         return {
             statusCode: 500,
             body: JSON.stringify({
