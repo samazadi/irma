@@ -4,4 +4,5 @@ export interface Book {
     author: string;
     isbn: string;
     description: string;
+    // status: "checked-out" | "available"
 }
