@@ -7,3 +7,9 @@ jspm_packages
 
 # Webpack directories
 .webpack
+
+# VScode directories
+.vscode/*
+
+# Local DynamoDB directories
+.dynamodb/*
