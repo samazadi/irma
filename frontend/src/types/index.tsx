@@ -6,6 +6,11 @@ export const SearchTypes: { [key: string]: SearchTypeValues } = {
     ID: "ID"
 }
 
+export interface SearchParams {
+    searchString: string;
+    searchType: SearchTypeValues;
+}
+
 export interface Book {
     id: string;
     title: string;
