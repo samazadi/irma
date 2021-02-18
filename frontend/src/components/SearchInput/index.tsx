@@ -36,8 +36,8 @@ const SearchInput = ({ prefilledSearchString, prefilledSearchType }: SearchInput
                 <div className="col-5 offset-2 col-md-6 offset-md-2">
                     <InputGroup size="lg">
                         <FormControl
-                            placeholder="Title, ISBN, or ID"
-                            aria-label="Title, ISBN, or ID"
+                            placeholder="Title, ISBN, ID, or Author"
+                            aria-label="Title, ISBN, ID, or Author"
                             aria-describedby="basic-addon2"
                             defaultValue={searchInput}
                             onChange={e => setSearchInput(e.target.value)}
@@ -54,6 +54,7 @@ const SearchInput = ({ prefilledSearchString, prefilledSearchType }: SearchInput
                             <Dropdown.Item eventKey={SearchTypes.TITLE}>Title</Dropdown.Item>
                             <Dropdown.Item eventKey={SearchTypes.ISBN}>ISBN</Dropdown.Item>
                             <Dropdown.Item eventKey={SearchTypes.ID}>ID</Dropdown.Item>
+                            <Dropdown.Item eventKey={SearchTypes.AUTHOR}>Author</Dropdown.Item>
                         </DropdownButton>
                     </InputGroup>
                 </div>

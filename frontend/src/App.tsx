@@ -1,37 +1,28 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route
 } from "react-router-dom";
 import Navbar from './components/Navbar';
+import Donate from './pages/Donate';
 import Home from './pages/Home';
+import Reports from './pages/Reports';
+import Returns from './pages/Returns';
 import Search from './pages/Search';
 
 const App = () => {
   return (
-    <Fragment>
+    <Router>
       <Navbar />
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/search/:searchString?/:searchType?">
-            <Search />
-          </Route>
-          <Route exact path="/returns">
-            <Home />
-          </Route>
-          <Route exact path="/donate">
-            <Home />
-          </Route>
-          <Route exact path="/reports">
-            <Home />
-          </Route>
-        </Switch>
-      </Router>
-    </Fragment>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/search/:searchString?/:searchType?" component={Search} />
+        <Route path="/returns" component={Returns} />
+        <Route path="/donate" component={Donate} />
+        <Route path="/reports" component={Reports} />
+      </Switch>
+    </Router>
   );
 }
 
