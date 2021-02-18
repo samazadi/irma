@@ -20,3 +20,10 @@ export interface Book {
     description: string;
     // status: "checked-out" | "available"
 }
+
+export type DonationFormValues = {
+    title: string,
+    author: string,
+    isbn: string,
+    description: string
+}
