@@ -1,16 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { InputGroup, FormControl, DropdownButton, Dropdown } from 'react-bootstrap';
 import { SearchTypes, SearchTypeValues } from '../../types';
-import { searchForBook } from '../../services/search';
+import { useHistory } from 'react-router-dom';
 
-const SearchInput = () => {
+interface SearchInputProps {
+    prefilledSearchString?: string;
+    prefilledSearchType?: SearchTypeValues;
+}
+
+const SearchInput = ({ prefilledSearchString, prefilledSearchType }: SearchInputProps) => {
+    const history = useHistory();
     const [searchInput, setSearchInput] = useState<string>("");
-    const [searchType, setSearchType] = useState<SearchTypeValues>("TITLE");
+    const [searchType, setSearchType] = useState<SearchTypeValues>("title");
+
+    useEffect(() => {
+        if (prefilledSearchString && prefilledSearchType) {
+            setSearchInput(prefilledSearchString);
+            setSearchType(prefilledSearchType);
+        }
+    }, [prefilledSearchString, prefilledSearchType]);
 
     const handleSearchClick = (): void => {
         if (!searchInput) return;
-        const searchResult = searchForBook(searchInput, searchType);
-        console.log("The result we got", searchResult);
+        history.push(`/search/${searchInput}/${searchType}`);
     }
 
     const handleDropdownSelect = (value: string | null): void => {
@@ -27,12 +39,13 @@ const SearchInput = () => {
                             placeholder="Title, ISBN, or ID"
                             aria-label="Title, ISBN, or ID"
                             aria-describedby="basic-addon2"
+                            defaultValue={searchInput}
                             onChange={e => setSearchInput(e.target.value)}
                         />
                         <DropdownButton
                             as={InputGroup.Append}
                             variant="primary"
-                            title={searchType}
+                            title={searchType.toUpperCase()}
                             id="input-group-dropdown-2"
                             style={{ minWidth: 100 }}
                             onSelect={handleDropdownSelect}

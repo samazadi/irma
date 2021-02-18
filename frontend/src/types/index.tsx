@@ -1,9 +1,9 @@
-export type SearchTypeValues = "TITLE" | "ISBN" | "ID";
+export type SearchTypeValues = "title" | "isbn" | "id";
 
 export const SearchTypes: { [key: string]: SearchTypeValues } = {
-    TITLE: "TITLE",
-    ISBN: "ISBN",
-    ID: "ID"
+    TITLE: "title",
+    ISBN: "isbn",
+    ID: "id"
 }
 
 export interface SearchParams {

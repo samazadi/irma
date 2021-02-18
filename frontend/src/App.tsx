@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
-import SearchResults from './pages/SearchResults';
+import Search from './pages/Search';
 
 const App = () => {
   return (
@@ -17,15 +17,18 @@ const App = () => {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/search/:searchString/:searchType">
-            <SearchResults />
+          <Route path="/search/:searchString?/:searchType?">
+            <Search />
           </Route>
-          {/* <Route path="/about">
-          <About />
+          <Route exact path="/returns">
+            <Home />
           </Route>
-          <Route path="/dashboard">
-          <Dashboard />
-        </Route> */}
+          <Route exact path="/donate">
+            <Home />
+          </Route>
+          <Route exact path="/reports">
+            <Home />
+          </Route>
         </Switch>
       </Router>
     </Fragment>
