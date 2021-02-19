@@ -1,7 +1,7 @@
 import * as AWS from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import dbClient from '../clients/dbClient';
-import { Book } from '../models/Book';
+import { Book, ScanResponse } from '../models/Book';
 
 export default class BookRepository {
     /**
@@ -9,12 +9,24 @@ export default class BookRepository {
      */
     constructor(private readonly documentClient: DocumentClient = dbClient(), private readonly irmaTable = process.env.IRMA_DDB_TABLE) { }
 
-    async scan(): Promise<Book[]> {
-        const result = await this.documentClient.scan({
-            TableName: this.irmaTable
-        }).promise();
+    async scan(lastEvaluatedKey?: string): Promise<ScanResponse> {
+        let params: DocumentClient.ScanInput = {
+            TableName: this.irmaTable,
+            Limit: 6
+        }
 
-        return result.Items as Book[];
+        // If we receive a lastEvaluatedKey, we include it in params
+        // as starting point of the scan for pagination.
+        if (lastEvaluatedKey) {
+            params = { ...params, ExclusiveStartKey: { id: lastEvaluatedKey } }
+        }
+
+        const result = await this.documentClient.scan(params).promise();
+
+        return {
+            LastEvaluatedKey: result.LastEvaluatedKey,
+            Books: result.Items as Book[]
+        }
     }
 
     async put(book: Book): Promise<Book> {

@@ -1,0 +1,1 @@
+export const apiUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:3333/dev/library' : 'http://localhost:3333/dev/library';

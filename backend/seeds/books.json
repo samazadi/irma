@@ -1,0 +1,98 @@
+[
+    {
+        "id": "aa5b1c95-9e58-443a-b6d9-e04a49d1ea33",
+        "title": "Unlocking Android",
+        "author": "W. Frank Ableson",
+        "isbn": "1933988673",
+        "description": "Unlocking Android: A Developer's Guide provides concise, hands-on instruction for the Android operating system and development tools. This book teaches important architectural concepts in a straightforward writing style and builds on this with practical and useful examples throughout.",
+        "status": "checked-out"
+    },
+    {
+        "id": "fd3c20e8-a408-487a-9606-060739450787",
+        "title": "Android in Action, Second Edition",
+        "author": "Robi Sen",
+        "isbn": "1935182722",
+        "description": "Android in Action, Second Edition is a comprehensive tutorial for Android developers. Taking you far beyond \"Hello Android,\" this fast-paced book puts you in the driver's seat as you learn important architectural concepts and implementation strategies. You'll master the SDK, build WebKit apps using HTML 5, and even learn to extend or replace Android's built-in features by building useful and intriguing examples. ",
+        "status": "available"
+    },
+    {
+        "id": "3c8aa3c6-d19b-4564-9757-873a9b1f4fa4",
+        "title": "Specification by Example",
+        "author": "Gojko Adzic",
+        "isbn": "1617290084",
+        "description": "New web applications require engaging user-friendly interfaces   and the cooler",
+        "status": "available"
+    },
+    {
+        "id": "12cb52af-4d09-40d4-a3c8-0df950f2c610",
+        "title": "Zend Framework in Action",
+        "author": "Nick Lo",
+        "isbn": "1933988320",
+        "description": "Zend Framework in Action is a comprehensive tutorial that shows how to use the Zend Framework to create web-based applications and web services. This book takes you on an over-the-shoulder tour of the components of the Zend Framework as you build a high quality, real-world web application.",
+        "status": "available"
+    },
+    {
+        "id": "d42c731a-c316-4946-a057-2e653f7b62eb",
+        "title": "Zend Framework in Action",
+        "author": "Nick Lo",
+        "isbn": "1933988320",
+        "description": "Zend Framework in Action is a comprehensive tutorial that shows how to use the Zend Framework to create web-based applications and web services. This book takes you on an over-the-shoulder tour of the components of the Zend Framework as you build a high quality, real-world web application.",
+        "status": "available"
+    },
+    {
+        "id": "c5f9a818-6b85-4222-9d71-97092d478a6e",
+        "title": "Zend Framework in Action",
+        "author": "Nick Lo",
+        "isbn": "1933988320",
+        "description": "Zend Framework in Action is a comprehensive tutorial that shows how to use the Zend Framework to create web-based applications and web services. This book takes you on an over-the-shoulder tour of the components of the Zend Framework as you build a high quality, real-world web application.",
+        "status": "available"
+    },
+    {
+        "id": "19b9ad81-040c-40f3-9d59-2de45e5b0054",
+        "title": "Zend Framework in Action",
+        "author": "Nick Lo",
+        "isbn": "1933988320",
+        "description": "Zend Framework in Action is a comprehensive tutorial that shows how to use the Zend Framework to create web-based applications and web services. This book takes you on an over-the-shoulder tour of the components of the Zend Framework as you build a high quality, real-world web application.",
+        "status": "available"
+    },
+    {
+        "id": "08e94ec4-6307-4166-b92a-fe2dbf558230",
+        "title": "Flex on Java",
+        "author": "Bernerd Allmon",
+        "isbn": "1933988797",
+        "description": "A beautifully written book that is a must have for every Java Developer.",
+        "status": "available"
+    },
+    {
+        "id": "bdf33e24-0b36-4015-a3da-5462d9c6d965",
+        "title": "Flex on Java",
+        "author": "Bernerd Allmon",
+        "isbn": "1933988797",
+        "description": "A beautifully written book that is a must have for every Java Developer.",
+        "status": "available"
+    },
+    {
+        "id": "0748caac-ae95-4d09-ad5e-e1a9f2362f3a",
+        "title": "Flex on Java",
+        "author": "Bernerd Allmon",
+        "isbn": "1933988797",
+        "description": "A beautifully written book that is a must have for every Java Developer.",
+        "status": "available"
+    },
+    {
+        "id": "625a0bd0-4317-4036-bde4-4dc27483f4f9",
+        "title": "Flex on Java",
+        "author": "Bernerd Allmon",
+        "isbn": "1933988797",
+        "description": "A beautifully written book that is a must have for every Java Developer.",
+        "status": "available"
+    },
+    {
+        "id": "8e937be5-3c7e-4efb-a6ae-ffa3982b7407",
+        "title": "Flex on Java",
+        "author": "Bernerd Allmon",
+        "isbn": "1933988797",
+        "description": "A beautifully written book that is a must have for every Java Developer.",
+        "status": "checked-out"
+    }
+]

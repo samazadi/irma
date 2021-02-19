@@ -1,30 +1,56 @@
 // this page will contain:
 // - ability to track changes for a book
 // - report that contains the current state of all books
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BooksStateTable from './BooksStateTable';
 import BookActivityLogTable from './BookActivityLogTable';
 import BookActivitySearchBox from './BookActivitySearchBox';
+import { getBooksAsync } from '../../api/bookApi';
+import { Book } from '../../types';
 
 const Reports = () => {
     const [searchValue, setSearchValue] = useState<string>("");
     const [activityLogData, setActivityLogData] = useState<number[]>([]);
+    const [books, setBooks] = useState<Book[]>([]);
+    const [lastEvaluatedKey, setLastEvaluatedKey] = useState<string>("");
 
-    const handleActivityLogSearch = () => {
+    useEffect(() => {
+        getBooksAsync().then(result => {
+            setBooks(result.Books);
+            if (result?.LastEvaluatedKey?.id) {
+                setLastEvaluatedKey(result.LastEvaluatedKey.id);
+            }
+            console.log(result)
+        })
+    }, []);
+
+    const handleActivityLogSearch = (): void => {
         if (!searchValue) return;
-        console.log("activity log hit", searchValue)
-        setActivityLogData([1])
+        setActivityLogData([1]);
+    }
+
+    const handleBookStateNextPage = (): void => {
+        // use last key to fetch new records
+        if (lastEvaluatedKey) {
+            getBooksAsync(lastEvaluatedKey).then(result => {
+                setBooks([...books, ...result.Books]);
+                setLastEvaluatedKey(result.LastEvaluatedKey?.id);
+            });
+        }
     }
 
     return (
         <div className="reports-wrapper">
-            <div className="container">
+            <div className="container-fluid">
                 <div className="row mb-5">
                     <div className="col-12 text-center">
                         <h1 className="display-4 my-4">Reports</h1>
                     </div>
                     <div className="col-12">
-                        <BooksStateTable />
+                        <BooksStateTable
+                            books={books}
+                            handlePageChange={handleBookStateNextPage}
+                        />
                     </div>
                 </div>
 

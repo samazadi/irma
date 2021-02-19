@@ -4,13 +4,17 @@ import BookService from '../services/BookService';
 
 export const handler: APIGatewayProxyHandler = async (_event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
+        const { pathParameters } = _event;
+
+        console.log(pathParameters)
+
         const bookService = new BookService();
-        const books = await bookService.get();
+        const books = await bookService.get(pathParameters?.lastEvaluatedKey);
 
         return {
             statusCode: 200,
             body: JSON.stringify({
-                books
+                ...books
             })
         };
     } catch (error) {

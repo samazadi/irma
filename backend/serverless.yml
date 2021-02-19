@@ -12,6 +12,13 @@ custom:
       port: 8000
       inMemory: true
       migrate: true
+      seed: true
+    seed:
+      groups:
+        sources:
+          - table: ${self:provider.environment.IRMA_DDB_TABLE}
+            sources: [./seeds/books.json]
+          
     stages:
       - dev
 
@@ -49,6 +56,9 @@ functions:
       - http:
           method: get
           path: library
+      - http:
+          method: get
+          path: library/{lastEvaluatedKey}
     iamRoleStatements:
       - Effect: Allow
         Action:

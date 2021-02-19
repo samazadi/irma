@@ -1,6 +1,6 @@
 import * as uuid from 'uuid';
 import BookRepository from '../repositories/BookRepository';
-import { Book } from '../models/Book';
+import { Book, ScanResponse } from '../models/Book';
 
 export default class BookService {
     bookRepostiroy: BookRepository;
@@ -9,8 +9,8 @@ export default class BookService {
         this.bookRepostiroy = bookRepository;
     }
 
-    async get(): Promise<Book[]> {
-        return this.bookRepostiroy.scan();
+    async get(lastEvaluatedKey?: string): Promise<ScanResponse> {
+        return this.bookRepostiroy.scan(lastEvaluatedKey);
     }
 
     async put(title: string, author: string, isbn: string, description: string): Promise<Book> {

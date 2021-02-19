@@ -2,11 +2,12 @@ import MaterialTable from 'material-table';
 import { Book } from '../../types';
 import { getMaterialTableIcons } from '../../utils';
 
-const data: Book[] = [
-    { id: 'Mehmet', title: 'Baran', author: 'some authior', isbn: 'someisbn', description: "asdfa", status: "available" },
-]
+interface BooksStateTableProps {
+    books: Book[];
+    handlePageChange: () => void;
+}
 
-const BooksStateTable = () => {
+const BooksStateTable = ({ books, handlePageChange }: BooksStateTableProps) => {
     return (
         <div className="shadow mt-3">
             <MaterialTable
@@ -15,12 +16,17 @@ const BooksStateTable = () => {
                     { title: 'Title', field: 'title' },
                     { title: 'Author', field: 'author' },
                     { title: 'ISBN', field: 'isbn' },
-                    { title: 'Description', field: 'description' },
+                    { title: 'Description', field: 'description', cellStyle: { textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: 350} },
                     { title: 'Status', field: 'status' }
                 ]}
-                data={data}
+                data={books}
                 title="Current State of all Books"
                 icons={getMaterialTableIcons()}
+                onChangePage={() => handlePageChange()}
+                options={{
+                    pageSizeOptions: [],
+                    showFirstLastPageButtons: false
+                }}
             />
         </div>
     )

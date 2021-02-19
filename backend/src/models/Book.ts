@@ -6,3 +6,8 @@ export interface Book {
     description: string;
     // status: "checked-out" | "available"
 }
+
+export interface ScanResponse {
+    LastEvaluatedKey: { [id: string]: string };
+    Books: Book[];
+}

@@ -35,3 +35,8 @@ export interface ActivityRecord {
     date: string;
     action: "check-out" | "check-in"
 }
+
+export interface ScanResponse {
+    LastEvaluatedKey: { [id: string]: string };
+    Books: Book[];
+}
