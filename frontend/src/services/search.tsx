@@ -9,21 +9,24 @@ export const searchForBook = (searchInput: string, searchType: SearchTypeValues)
             title: "Title 1",
             author: "my author name",
             isbn: "1234",
-            description: "some description"
+            description: "some description",
+            status: "available"
         },
         {
             id: "2",
             title: "Title 2",
             author: "my author name2",
             isbn: "5678",
-            description: "some description 2"
+            description: "some description 2",
+            status: "checked-out"
         },
         {
             id: "3",
             title: "Title 3",
             author: "my author name3",
             isbn: "9101",
-            description: "some description 3"
+            description: "some description 3",
+            status: "available"
         }
     ]
     

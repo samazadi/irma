@@ -18,7 +18,7 @@ export interface Book {
     author: string;
     isbn: string;
     description: string;
-    // status: "checked-out" | "available"
+    status: "checked-out" | "available"
 }
 
 export type DonationFormValues = {
@@ -26,4 +26,12 @@ export type DonationFormValues = {
     author: string,
     isbn: string,
     description: string
+}
+
+export interface ActivityRecord {
+    id: string;
+    title: string;
+    isbn: string;
+    date: string;
+    action: "check-out" | "check-in"
 }
