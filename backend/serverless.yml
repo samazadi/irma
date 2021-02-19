@@ -18,7 +18,9 @@ custom:
         sources:
           - table: ${self:provider.environment.IRMA_DDB_TABLE}
             sources: [./seeds/books.json]
-          
+          - table: ${self:provider.environment.IRMA_ACTIVITIES_DDB_TABLE}
+            sources: [./seeds/book_activities.json]
+
     stages:
       - dev
 
@@ -35,7 +37,8 @@ provider:
     minimumCompressionSize: 1024
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    IRMA_DDB_TABLE: Irma-dev
+    IRMA_DDB_TABLE: irma-dev
+    IRMA_ACTIVITIES_DDB_TABLE: irma-activities-dev
 
 functions:
   createBook:
@@ -89,6 +92,18 @@ functions:
           - dynamodb:DeleteItem
         Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_DDB_TABLE}
 
+  getBookActivities:
+    handler: src/api/getBookActivities.handler
+    events:
+      - http:
+          method: get
+          path: library/activities/{bookId}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_ACTIVITIES_DDB_TABLE}
+
 resources:
   Resources:
     IrmaDynamoDBTable:
@@ -101,6 +116,36 @@ resources:
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    IrmaActivitiesDDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.IRMA_ACTIVITIES_DDB_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: bookId
+            AttributeType: S
+          - AttributeName: date
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: BookIdIndex
+            KeySchema:
+              - AttributeName: bookId
+                KeyType: HASH
+              - AttributeName: date
+                KeyType: RANGE
+            Projection:
+              ProjectionType: "ALL"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1

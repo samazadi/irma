@@ -1,32 +1,41 @@
-// this page will contain:
-// - ability to track changes for a book
-// - report that contains the current state of all books
 import { useState, useEffect } from 'react';
 import BooksStateTable from './BooksStateTable';
 import BookActivityLogTable from './BookActivityLogTable';
 import BookActivitySearchBox from './BookActivitySearchBox';
-import { getBooksAsync } from '../../api/bookApi';
-import { Book } from '../../types';
+import { getBookActivities, getBooksAsync } from '../../api/bookApi';
+import { Activity, Book } from '../../types';
 
 const Reports = () => {
     const [searchValue, setSearchValue] = useState<string>("");
-    const [activityLogData, setActivityLogData] = useState<number[]>([]);
     const [books, setBooks] = useState<Book[]>([]);
+    const [activities, setActivities] = useState<Activity[]>([]);
     const [lastEvaluatedKey, setLastEvaluatedKey] = useState<string>("");
-
+    const [showToast, setShowToast] = useState<boolean>(false);
+    
     useEffect(() => {
         getBooksAsync().then(result => {
             setBooks(result.Books);
             if (result?.LastEvaluatedKey?.id) {
                 setLastEvaluatedKey(result.LastEvaluatedKey.id);
             }
-            console.log(result)
         })
     }, []);
 
+    const hackyToastAlert = () => {
+        setShowToast(true);
+        setTimeout(() => {
+            setShowToast(false);
+        }, 5000);
+    }
+
     const handleActivityLogSearch = (): void => {
         if (!searchValue) return;
-        setActivityLogData([1]);
+        getBookActivities(searchValue).then(result => {
+            if (!result.Activities.length) {
+                hackyToastAlert();
+            }
+            setActivities([...activities, ...result.Activities])
+        });
     }
 
     const handleBookStateNextPage = (): void => {
@@ -58,8 +67,9 @@ const Reports = () => {
                     <div className="col-12">
                         <h3>Activity Log</h3>
                         <p>To get the activities of a book, enter the book ID</p>
+                        {showToast && <p className="text-danger">No results found...</p>}
                         <BookActivitySearchBox handleValueChange={(val: string) => setSearchValue(val)} handleSearchClick={handleActivityLogSearch} />
-                        {activityLogData.length ? <BookActivityLogTable /> : null}
+                        {activities.length ? <BookActivityLogTable activities={activities} /> : null}
                     </div>
                 </div>
             </div>

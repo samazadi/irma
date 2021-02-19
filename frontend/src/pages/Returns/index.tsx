@@ -8,7 +8,6 @@ const Returns = () => {
 
     const handleReturn = () => {
         if (!bookId) return;
-        console.log("Handle it:", bookId);
     }
 
     return (

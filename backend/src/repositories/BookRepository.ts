@@ -1,13 +1,17 @@
 import * as AWS from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import dbClient from '../clients/dbClient';
-import { Book, ScanResponse } from '../models/Book';
+import { Activity, Book, GetActivitiesResponse, ScanResponse } from '../models/Book';
 
 export default class BookRepository {
     /**
      *
      */
-    constructor(private readonly documentClient: DocumentClient = dbClient(), private readonly irmaTable = process.env.IRMA_DDB_TABLE) { }
+    constructor(
+        private readonly documentClient: DocumentClient = dbClient(),
+        private readonly irmaTable = process.env.IRMA_DDB_TABLE,
+        private readonly irmaActivitiesTable = process.env.IRMA_ACTIVITIES_DDB_TABLE
+    ) { }
 
     async scan(lastEvaluatedKey?: string): Promise<ScanResponse> {
         let params: DocumentClient.ScanInput = {
@@ -27,6 +31,26 @@ export default class BookRepository {
             LastEvaluatedKey: result.LastEvaluatedKey,
             Books: result.Items as Book[]
         }
+    }
+
+    async getActivities(bookId: string): Promise<GetActivitiesResponse> {
+        const params: DocumentClient.QueryInput = {
+            TableName: this.irmaActivitiesTable,
+            IndexName: 'BookIdIndex',
+            KeyConditionExpression: "bookId = :bookId",
+            ExpressionAttributeValues: {
+                ":bookId": bookId
+            },
+            Limit: 1000,
+            Select: 'ALL_ATTRIBUTES'
+        }
+
+        const result = await this.documentClient.query(params).promise();
+
+        return {
+            LastEvaluatedKey: result.LastEvaluatedKey,
+            Activities: result.Items as Activity[]
+        };
     }
 
     async put(book: Book): Promise<Book> {

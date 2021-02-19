@@ -7,16 +7,16 @@ export const handler: APIGatewayProxyHandler = async (_event: APIGatewayProxyEve
         const { pathParameters } = _event;
         
         const bookService = new BookService();
-        const books = await bookService.get(pathParameters?.lastEvaluatedKey);
+        const bookActivities = await bookService.getActivities(pathParameters?.bookId);
 
         return {
             statusCode: 200,
             body: JSON.stringify({
-                ...books
+                ...bookActivities
             })
         };
     } catch (error) {
-        console.error(`Error in getBook: ${error}`);
+        console.error(`Error in getBookActivities: ${error}`);
         return {
             statusCode: 500,
             body: JSON.stringify({

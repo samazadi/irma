@@ -25,7 +25,8 @@ const BooksStateTable = ({ books, handlePageChange }: BooksStateTableProps) => {
                 onChangePage={() => handlePageChange()}
                 options={{
                     pageSizeOptions: [],
-                    showFirstLastPageButtons: false
+                    showFirstLastPageButtons: false,
+                    search: false
                 }}
             />
         </div>

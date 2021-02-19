@@ -1,0 +1,114 @@
+[
+    {
+        "id": "2df5ea3f-0483-4438-b28d-58a32f8641df",
+        "bookId": "aa5b1c95-9e58-443a-b6d9-e04a49d1ea33",
+        "title": "Unlocking Android",
+        "isbn": "1933988673",
+        "date": "Fri, 19 Feb 2021 07:14:54 GMT",
+        "action": "check-in"
+    },
+    {
+        "id": "997ca4aa-3cb6-4c39-aa2e-d75857156ff7",
+        "bookId": "fd3c20e8-a408-487a-9606-060739450787",
+        "title": "Android in Action, Second Edition",
+        "isbn": "1935182722",
+        "date": "Fri, 19 Feb 2021 06:14:54 GMT",
+        "action": "check-in"
+    },
+    {
+        "id": "190a54ba-de0a-4420-9ae3-2e9f08299d64",
+        "bookId": "3c8aa3c6-d19b-4564-9757-873a9b1f4fa4",
+        "title": "Specification by Example",
+        "isbn": "1617290084",
+        "date": "Fri, 19 Feb 2021 05:14:54 GMT",
+        "action": "check-in"
+    },
+    {
+        "id": "9e095425-ef0c-498d-8a27-f5c22f34f28b",
+        "bookId": "12cb52af-4d09-40d4-a3c8-0df950f2c610",
+        "title": "Zend Framework in Action",
+        "isbn": "1933988320",
+        "date": "Fri, 19 Feb 2021 04:14:54 GMT",
+        "action": "check-out"
+    },
+    {
+        "id": "a900a181-4c92-494e-8713-1701a02b848e",
+        "bookId": "d42c731a-c316-4946-a057-2e653f7b62eb",
+        "title": "Zend Framework in Action",
+        "isbn": "1933988320",
+        "date": "Thursday, 18 Feb 2021 07:14:54 GMT",
+        "action": "check-out"
+    },
+    {
+        "id": "31f7a11f-2965-471a-b7b0-2b5395358538",
+        "bookId": "c5f9a818-6b85-4222-9d71-97092d478a6e",
+        "title": "Zend Framework in Action",
+        "isbn": "1933988320",
+        "date": "Thursday, 18 Feb 2021 05:14:54 GMT",
+        "action": "check-in"
+    },
+    {
+        "id": "ec65e73f-d3b0-46df-881e-95c41acda697",
+        "bookId": "19b9ad81-040c-40f3-9d59-2de45e5b0054",
+        "title": "Zend Framework in Action",
+        "isbn": "1933988320",
+        "date": "Wednesday, 17 Feb 2021 07:14:54 GMT",
+        "action": "check-in"
+    },
+    {
+        "id": "1dde30d4-8515-4fdd-b23c-fa77eb68bbab",
+        "bookId": "08e94ec4-6307-4166-b92a-fe2dbf558230",
+        "title": "Flex on Java",
+        "isbn": "1933988797",
+        "date": "Thursday, 18 Feb 2021 01:14:54 GMT",
+        "action": "check-in"
+    },
+    {
+        "id": "1dde30d4-8515-4fdd-b23c-fa77eb6ggdz2",
+        "bookId": "08e94ec4-6307-4166-b92a-fe2dbf558230",
+        "title": "Flex on Java",
+        "isbn": "1933988797",
+        "date": "Thursday, 19 Feb 2021 01:14:54 GMT",
+        "action": "check-out"
+    },
+    {
+        "id": "1dde30d4-8515-4fdd-b23c-zzddeb6ggdz1",
+        "bookId": "08e94ec4-6307-4166-b92a-fe2dbf558230",
+        "title": "Flex on Java",
+        "isbn": "1933988797",
+        "date": "Thursday, 22 Feb 2021 01:14:54 GMT",
+        "action": "check-in"
+    },
+    {
+        "id": "fd2ece6a-4c0c-499f-834c-15b47cbd056e",
+        "bookId": "bdf33e24-0b36-4015-a3da-5462d9c6d965",
+        "title": "Flex on Java",
+        "isbn": "1933988797",
+        "date": "Wednesday, 17 Feb 2021 01:15:54 GMT",
+        "action": "check-in"
+    },
+    {
+        "id": "fd2ece6a-4c0c-499f-834c-15b47cbd056z",
+        "bookId": "bdf33e24-0b36-4015-a3da-5462d9c6d965",
+        "title": "Flex on Java",
+        "isbn": "1933988797",
+        "date": "Wednesday, 17 Feb 2021 01:15:54 GMT",
+        "action": "check-in"
+    },
+    {
+        "id": "fd2ece6a-4c0c-499f-834c-15b47cbd059g",
+        "bookId": "bdf33e24-0b36-4015-a3da-5462d9c6d965",
+        "title": "Flex on Java",
+        "isbn": "1933988797",
+        "date": "Wednesday, 19 Feb 2021 01:15:54 GMT",
+        "action": "check-out"
+    },
+    {
+        "id": "fd2ece6a-4c0c-499f-834c-15b47cbd043y",
+        "bookId": "bdf33e24-0b36-4015-a3da-5462d9c6d965",
+        "title": "Flex on Java",
+        "isbn": "1933988797",
+        "date": "Wednesday, 20 Feb 2021 01:15:54 GMT",
+        "action": "check-in"
+    }
+]

@@ -28,8 +28,9 @@ export type DonationFormValues = {
     description: string
 }
 
-export interface ActivityRecord {
+export interface Activity {
     id: string;
+    bookId: string;
     title: string;
     isbn: string;
     date: string;
@@ -39,4 +40,9 @@ export interface ActivityRecord {
 export interface ScanResponse {
     LastEvaluatedKey: { [id: string]: string };
     Books: Book[];
+}
+
+export interface GetActivitiesResponse {
+    LastEvaluatedKey: { [id: string]: string };
+    Activities: Activity[];
 }
