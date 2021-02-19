@@ -1,16 +1,24 @@
-// donate page. This page will contain:
-// - ability to Create a book    
-
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { donateBook } from '../../api/bookApi';
 import { DonationFormValues } from '../../types';
 import "./index.scss";
 
 const Donate = () => {
-    const { register, handleSubmit, errors } = useForm<DonationFormValues>();
+    const [showSuccessMessage, setShowSuccessMessage] = useState<boolean>(false);
+    const { register, handleSubmit, errors, reset } = useForm<DonationFormValues>();
 
     const onSubmit: SubmitHandler<DonationFormValues> = data => {
-        alert(JSON.stringify(data));
+        console.log("handle hit", data)
+        donateBook(data)
+            .then(response => handleSuccessfulDonation())
+            .catch(error => console.error("Error occured: ", error));
     };
+
+    const handleSuccessfulDonation = () => {
+        setShowSuccessMessage(true);
+        reset();
+    }
 
     return (
         <div className="donate-wrapper">
@@ -19,8 +27,8 @@ const Donate = () => {
                     <div className="col-12 col-md-8 offset-md-2">
                         <div className="text-center mt-4">
                             <h1 className="display-4">Donate</h1>
-                            <p>Thank you for donating!</p>
                             <p className="mb-4">Please enter all fields below to donate your book.</p>
+                            {showSuccessMessage && <h4 className="text-success">Thank you very much for donating!</h4>}
                         </div>
                         <div className="form-wrapper p-4 shadow mt-5">
                             <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,7 +79,7 @@ const Donate = () => {
                                         className="form-control"
                                         id="description"
                                         name="description"
-                                        ref={register({ required: true, maxLength: 10 })}
+                                        ref={register({ required: true, minLength: 10 })}
                                     />
                                 </div>
                                 {errors.description && <p className="text-danger">Description is required and min. 10 characters</p>}
