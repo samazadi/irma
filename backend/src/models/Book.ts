@@ -4,8 +4,10 @@ export interface Book {
     author: string;
     isbn: string;
     description: string;
-    // status: "checked-out" | "available"
+    status: Status
 }
+
+export type Status = "checked-out" | "available"
 
 export interface ScanResponse {
     LastEvaluatedKey: { [id: string]: string };
@@ -18,10 +20,12 @@ export interface Activity {
     title: string;
     isbn: string;
     date: string;
-    action: "check-out" | "check-in"
+    action: Actions
 }
 
 export interface GetActivitiesResponse {
     LastEvaluatedKey: { [id: string]: string };
     Activities: Activity[];
 }
+
+export type Actions = "check-out" | "check-in"

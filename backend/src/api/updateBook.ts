@@ -1,16 +1,15 @@
 import 'source-map-support/register';
 import { APIGatewayProxyHandler, APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import BookService from '../services/BookService';
-import { Book } from '../models/Book';
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
-        const id = event.pathParameters.id;
+        const { id, action } = JSON.parse(event.body);
+
+        console.log("body:", event.body)
 
         const bookService = new BookService();
-        const book: Partial<Book> = { ...JSON.parse(event.body), id }
-
-        const updatedBook = await bookService.update(book);
+        const updatedBook = await bookService.update(id, action);
 
         return {
             statusCode: 200,

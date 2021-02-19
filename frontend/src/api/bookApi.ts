@@ -1,4 +1,4 @@
-import { ScanResponse, GetActivitiesResponse, DonationFormValues } from '../types';
+import { ScanResponse, GetActivitiesResponse, DonationFormValues, UpdateBookParams } from '../types';
 import { apiUrl } from '../config';
 
 export const getBooksAsync = (lastEvaluatedKey?: string): Promise<ScanResponse> => {
@@ -22,4 +22,15 @@ export const donateBook = (bookDetails: DonationFormValues) => {
     return fetch(apiUrl, params)
         .then(response => response.json())
         .catch(error => console.error('Something went wrong making a donation...', error));
+}
+
+export const returnBook = (update: UpdateBookParams) => {
+    const params: RequestInit = {
+        method: 'POST',
+        body: JSON.stringify({ ...update })
+    }
+
+    return fetch(`${apiUrl}/update`, params)
+        .then(response => response.json())
+        .catch(error => console.error('Something went wrong returning a book...', error));
 }

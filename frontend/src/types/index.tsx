@@ -46,3 +46,8 @@ export interface GetActivitiesResponse {
     LastEvaluatedKey: { [id: string]: string };
     Activities: Activity[];
 }
+
+export interface UpdateBookParams {
+    id: string;
+    action: "check-out" | "check-in"
+}

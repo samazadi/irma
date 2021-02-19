@@ -1,6 +1,6 @@
 import * as uuid from 'uuid';
 import BookRepository from '../repositories/BookRepository';
-import { Book, GetActivitiesResponse, ScanResponse } from '../models/Book';
+import { Actions, Book, GetActivitiesResponse, ScanResponse } from '../models/Book';
 
 export default class BookService {
     bookRepostiroy: BookRepository;
@@ -25,12 +25,13 @@ export default class BookService {
             title,
             author,
             isbn,
-            description
+            description,
+            status: "available"
         });
     }
 
-    async update(book: Partial<Book>) {
-        return await this.bookRepostiroy.update(book);
+    async update(id: string, action: Actions) {
+        return await this.bookRepostiroy.update(id, action);
     }
 
     async delete(id: string) {

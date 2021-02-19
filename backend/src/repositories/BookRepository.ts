@@ -1,7 +1,7 @@
 import * as AWS from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import dbClient from '../clients/dbClient';
-import { Activity, Book, GetActivitiesResponse, ScanResponse } from '../models/Book';
+import { Actions, Activity, Book, GetActivitiesResponse, ScanResponse, Status } from '../models/Book';
 
 export default class BookRepository {
     /**
@@ -62,22 +62,23 @@ export default class BookRepository {
         return book;
     }
 
-    async update(book: Partial<Book>): Promise<Book> {
+    async update(id: string, action: Actions): Promise<Book> {
+        const newStatus: Status = action === "check-in" ? "available" : "checked-out";
+
         const updated = await this.documentClient.update({
             TableName: this.irmaTable,
-            Key: { 'id': book.id },
-            UpdateExpression: 'set #title = :title, author = :author, isbn = :isbn, description = :description',
-            // ExpressionAttributeNames: {
-            //     '#title': 'title'
-            // },
+            Key: { 'id': id },
+            UpdateExpression: 'SET #st = :value',
             ExpressionAttributeValues: {
-                ':title': book.title,
-                ':author': book.author,
-                ':isbn': book.isbn,
-                ':description': book.description
+                ':value': newStatus
+            },
+            ExpressionAttributeNames: {
+                "#st": "status"
             },
             ReturnValues: 'ALL_NEW'
         }).promise();
+
+        console.log("the updated value", updated)
 
         return updated.Attributes as Book;
     }

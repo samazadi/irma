@@ -72,8 +72,8 @@ functions:
     handler: src/api/updateBook.handler
     events:
       - http:
-          method: patch
-          path: library/{id}
+          method: post
+          path: library/update
     iamRoleStatements:
       - Effect: Allow
         Action:

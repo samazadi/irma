@@ -1,13 +1,18 @@
 // returns page. This page will contain the ability to:
 // - Update a book (change state of that book to `available` from `borrowed`)
 import { useState } from 'react';
+import { returnBook } from '../../api/bookApi';
 import "./index.scss";
 
 const Returns = () => {
     const [bookId, setBookId] = useState<string>("");
+    const [bookSuccessfullyReturned, setBookSuccessfullyReturned] = useState<boolean>(false);
 
     const handleReturn = () => {
         if (!bookId) return;
+        returnBook({ id: bookId, action: "check-in" })
+            .then(response => setBookSuccessfullyReturned(true))
+            .catch(error => console.log("errror", error))
     }
 
     return (
@@ -23,8 +28,7 @@ const Returns = () => {
                             className="form-control form-control-lg"
                             onChange={e => setBookId(e.target.value)}
                         />
-                        <p className="text-danger">Something went wrong!</p>
-                        <p className="text-success">All done!</p>
+                        {bookSuccessfullyReturned && <h3 className="text-success">All done!</h3>}
                     </div>
                     <div className="form-group col-4 mx-auto">
                         <button
