@@ -68,6 +68,27 @@ functions:
           - dynamodb:Scan
         Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_DDB_TABLE}
 
+  searchBooks:
+    handler: src/api/searchBook.handler
+    events:
+      - http:
+          method: get
+          path: library/search/id/{id}
+      - http:
+          method: get
+          path: library/search/isbn/{isbn}
+      - http:
+          method: get
+          path: library/search/title/{title}
+      - http:
+          method: get
+          path: library/search/author/{author}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Scan
+        Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_DDB_TABLE}
+
   updateBook:
     handler: src/api/updateBook.handler
     events:
@@ -113,9 +134,46 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
+          - AttributeName: isbn
+            AttributeType: S
+          - AttributeName: title
+            AttributeType: S
+          - AttributeName: author
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: IsbnIndex
+            KeySchema:
+              - AttributeName: isbn
+                KeyType: HASH
+            Projection:
+              ProjectionType: "ALL"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          
+          - IndexName: TitleIndex
+            KeySchema:
+              - AttributeName: title
+                KeyType: HASH
+            Projection:
+              ProjectionType: "ALL"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          
+          - IndexName: AuthorIndex
+            KeySchema:
+              - AttributeName: author
+                KeyType: HASH
+            Projection:
+              ProjectionType: "ALL"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1

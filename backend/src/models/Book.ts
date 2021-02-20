@@ -7,6 +7,10 @@ export interface Book {
     status: Status
 }
 
+export interface SearchResults extends Book {
+    stock?: number;
+}
+
 export type Status = "checked-out" | "available"
 
 export interface ScanResponse {
@@ -29,3 +33,5 @@ export interface GetActivitiesResponse {
 }
 
 export type Actions = "check-out" | "check-in"
+
+export type SearchTypeValues = "title" | "isbn" | "id" | "author";

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import BooksStateTable from './BooksStateTable';
 import BookActivityLogTable from './BookActivityLogTable';
 import BookActivitySearchBox from './BookActivitySearchBox';
-import { getBookActivities, getBooksAsync } from '../../api/bookApi';
+import { getBookActivities, getBooks } from '../../api/bookApi';
 import { Activity, Book } from '../../types';
 
 const Reports = () => {
@@ -13,7 +13,7 @@ const Reports = () => {
     const [showToast, setShowToast] = useState<boolean>(false);
     
     useEffect(() => {
-        getBooksAsync().then(result => {
+        getBooks().then(result => {
             setBooks(result.Books);
             if (result?.LastEvaluatedKey?.id) {
                 setLastEvaluatedKey(result.LastEvaluatedKey.id);
@@ -41,7 +41,7 @@ const Reports = () => {
     const handleBookStateNextPage = (): void => {
         // use last key to fetch new records
         if (lastEvaluatedKey) {
-            getBooksAsync(lastEvaluatedKey).then(result => {
+            getBooks(lastEvaluatedKey).then(result => {
                 setBooks([...books, ...result.Books]);
                 setLastEvaluatedKey(result.LastEvaluatedKey?.id);
             });

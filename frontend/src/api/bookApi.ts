@@ -1,7 +1,7 @@
-import { ScanResponse, GetActivitiesResponse, DonationFormValues, UpdateBookParams } from '../types';
+import { ScanResponse, GetActivitiesResponse, DonationFormValues, UpdateBookParams, SearchTypeValues } from '../types';
 import { apiUrl } from '../config';
 
-export const getBooksAsync = (lastEvaluatedKey?: string): Promise<ScanResponse> => {
+export const getBooks = (lastEvaluatedKey?: string): Promise<ScanResponse> => {
     const url = lastEvaluatedKey ? `${apiUrl}/${lastEvaluatedKey}` : apiUrl;
     return fetch(url)
         .then(response => response.json())
@@ -14,7 +14,7 @@ export const getBookActivities = (id: string): Promise<GetActivitiesResponse> =>
         .catch(error => console.error('Something went wrong getting activities...', error));
 }
 
-export const donateBook = (bookDetails: DonationFormValues) => {
+export const donateBook = (bookDetails: DonationFormValues): Promise<void> => {
     const params: RequestInit = {
         method: 'POST',
         body: JSON.stringify({ ...bookDetails })
@@ -24,7 +24,7 @@ export const donateBook = (bookDetails: DonationFormValues) => {
         .catch(error => console.error('Something went wrong making a donation...', error));
 }
 
-export const returnBook = (update: UpdateBookParams) => {
+export const returnBook = (update: UpdateBookParams): Promise<void> => {
     const params: RequestInit = {
         method: 'POST',
         body: JSON.stringify({ ...update })
@@ -33,4 +33,11 @@ export const returnBook = (update: UpdateBookParams) => {
     return fetch(`${apiUrl}/update`, params)
         .then(response => response.json())
         .catch(error => console.error('Something went wrong returning a book...', error));
+}
+
+export const searchForBook = (searchString: string, searchType: SearchTypeValues) => {
+    console.log("hit", searchString, searchType);
+    return fetch(`${apiUrl}/${searchType}/${searchString}`)
+        .then(response => response.json())
+        .catch(error => console.error('Something went wrong...', error));
 }

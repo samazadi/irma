@@ -1,7 +1,8 @@
 import * as AWS from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import { exists } from 'fs';
 import dbClient from '../clients/dbClient';
-import { Actions, Activity, Book, GetActivitiesResponse, ScanResponse, Status } from '../models/Book';
+import { Actions, Activity, Book, GetActivitiesResponse, ScanResponse, SearchResults, SearchTypeValues, Status } from '../models/Book';
 
 export default class BookRepository {
     /**
@@ -53,6 +54,15 @@ export default class BookRepository {
         };
     }
 
+    async searchBooks(searchString: string, searchType: SearchTypeValues): Promise<Book[]> {
+        const params: DocumentClient.QueryInput = this.searchBookQueryParamGenerator(searchString, searchType);
+        const result = await this.documentClient.query(params).promise();
+
+        // TODO: get the results from the helper function for mapping
+
+        return result.Items as Book[]
+    }
+
     async put(book: Book): Promise<Book> {
         await this.documentClient.put({
             TableName: this.irmaTable,
@@ -88,5 +98,86 @@ export default class BookRepository {
             TableName: this.irmaTable,
             Key: { 'id': id }
         }).promise();
+    }
+
+    private transformSearchResults(results: Book[]): SearchResults[] {
+        let transformedMap = {};
+        const searchResults: SearchResults[] = results;
+
+        searchResults.forEach(book => {
+            if (book.status !== 'available') return;
+            const existsInMap = !!transformedMap[book.isbn];
+
+            if (!existsInMap) {
+                book.stock = 1;
+                transformedMap[book.isbn] = book;
+            } else {
+                transformedMap[book.isbn].stock += 1;
+            }
+        })
+        // TODO: return the mapp results not the arr
+        // and cast book to search results instead of reassign
+        return searchResults;
+    }
+
+    private searchBookQueryParamGenerator(searchString: string, searchType: SearchTypeValues): DocumentClient.QueryInput {
+        const baseParams: DocumentClient.QueryInput = {
+            TableName: this.irmaTable,
+            Limit: 1000,
+            Select: 'ALL_ATTRIBUTES'
+        }
+
+        let params = {};
+        switch (searchType) {
+            case "author":
+                params = {
+                    IndexName: 'AuthorIndex',
+                    KeyConditionExpression: 'author = :author',
+                    ExpressionAttributeValues: {
+                        ':author': searchString
+                    },
+                }
+                break;
+
+            case "id":
+                params = {
+                    KeyConditionExpression: 'id = :id',
+                    ExpressionAttributeValues: {
+                        ':id': searchString
+                    }
+                };
+                break;
+
+            case "isbn":
+                params = {
+                    IndexName: 'IsbnIndex',
+                    KeyConditionExpression: 'isbn = :isbn',
+                    ExpressionAttributeValues: {
+                        ':isbn': searchString
+                    },
+                }
+                break;
+
+            case "title":
+                params = {
+                    IndexName: 'TitleIndex',
+                    KeyConditionExpression: 'title = :title',
+                    ExpressionAttributeValues: {
+                        ':title': searchString
+                    },
+                }
+                break;
+
+            default:
+                params = {
+                    KeyConditionExpression: 'id = :id',
+                    ExpressionAttributeValues: {
+                        ':id': searchString
+                    }
+                };
+                break;
+        }
+
+        return { ...baseParams, ...params };
     }
 }

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import SearchInput from '../../components/SearchInput';
 import Results from './Results';
@@ -8,6 +9,23 @@ const Search = () => {
     const params: SearchParams = useParams();
     const { searchString, searchType } = params;
 
+    useEffect(() => {
+        if (searchString && searchType) {
+            console.log("I run any time", searchString, searchType);
+        }
+    }, [searchString, searchType])
+
+    const handleBookStateNextPage = (): void => {
+        // // use last key to fetch new records
+        // if (lastEvaluatedKey) {
+        //     getBooksAsync(lastEvaluatedKey).then(result => {
+        //         setBooks([...books, ...result.Books]);
+        //         setLastEvaluatedKey(result.LastEvaluatedKey?.id);
+        //     });
+        // }
+        console.log("handle next page: ")
+    }
+
     return (
         <div className="search-results-wrapper">
             <div className="jumbotron">
@@ -17,8 +35,7 @@ const Search = () => {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-12 col-md-10 offset-md-1">
-                        <h3 className="text-center mb-3">Results</h3>
-                        <Results />
+                        <Results books={[]} handlePageChange={handleBookStateNextPage} />
                     </div>
                 </div>
             </div>
