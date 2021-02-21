@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { returnBook } from '../../api/bookApi';
+import { returnOrBorrowBook } from '../../api/bookApi';
 import "./index.scss";
 
 const Returns = () => {
@@ -9,7 +9,7 @@ const Returns = () => {
 
     const handleReturn = () => {
         if (!bookId) return;
-        returnBook({ id: bookId, action: "check-in" })
+        returnOrBorrowBook({ id: bookId, action: "check-in" })
             .then((response: any) => {
                 if (response?.code) {
                     console.error(`An error occured: `, { 

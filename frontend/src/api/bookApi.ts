@@ -24,7 +24,7 @@ export const donateBook = (bookDetails: DonationFormValues): Promise<void> => {
         .catch(error => console.error('Something went wrong making a donation...', error));
 }
 
-export const returnBook = (update: UpdateBookParams): Promise<void> => {
+export const returnOrBorrowBook = (update: UpdateBookParams): Promise<void> => {
     const params: RequestInit = {
         method: 'POST',
         body: JSON.stringify({ ...update })

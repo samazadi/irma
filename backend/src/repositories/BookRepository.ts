@@ -138,26 +138,6 @@ export default class BookRepository {
         }).promise();
     }
 
-    private transformSearchResults(results: Book[]): SearchResults[] {
-        let transformedMap = {};
-        const searchResults: SearchResults[] = results;
-
-        searchResults.forEach(book => {
-            if (book.status !== 'available') return;
-            const existsInMap = !!transformedMap[book.isbn];
-
-            if (!existsInMap) {
-                book.stock = 1;
-                transformedMap[book.isbn] = book;
-            } else {
-                transformedMap[book.isbn].stock += 1;
-            }
-        })
-        // TODO: return the mapp results not the arr
-        // and cast book to search results instead of reassign
-        return searchResults;
-    }
-
     private searchBookQueryParamGenerator(searchString: string, searchType: SearchTypeValues): SearchParamGeneratorResponse {
         const baseParams: DocumentClient.QueryInput = {
             TableName: this.irmaTable,

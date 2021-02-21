@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import SearchInput from '../../components/SearchInput';
 import Results from './Results';
-import { Book, SearchParams, SearchTypeValues } from "../../types";
+import { Book, SearchParams, SearchTypeValues, UpdateBookParams } from "../../types";
 import "./index.scss";
-import { searchForBook } from '../../api/bookApi';
+import { returnOrBorrowBook, searchForBook } from '../../api/bookApi';
 
 const Search = () => {
     const [books, setBooks] = useState<Book[]>([]);
@@ -37,11 +37,20 @@ const Search = () => {
             });
     }
 
+    const handleBorrowBook = (book: Book) => {
+        const { id } = book;
+        const update: UpdateBookParams = {
+            id,
+            action: "check-out"
+        }
+        returnOrBorrowBook(update);
+    }
+
     const resultsSection = () => (
         <div className="container-fluid">
             <div className="row">
                 <div className="col-12 col-md-10 offset-md-1">
-                    {noResultsFound ? <h3 className="text-danger">No results found</h3> : <Results books={books} />}
+                    {noResultsFound ? <h3 className="text-danger">No results found</h3> : <Results books={books} handleBorrowBook={handleBorrowBook} />}
                 </div>
             </div>
         </div>
