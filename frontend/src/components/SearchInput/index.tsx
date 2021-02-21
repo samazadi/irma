@@ -40,7 +40,7 @@ const SearchInput = ({ prefilledSearchString, prefilledSearchType, handleNoneRou
     return (
         <div className="container">
             <div className="row">
-                <div className="col-5 offset-2 col-md-6 offset-md-2">
+                <div className="col-12 col-md-6 offset-md-2">
                     <InputGroup size="lg">
                         <FormControl
                             placeholder="Title, ISBN, ID, or Author"
@@ -65,10 +65,10 @@ const SearchInput = ({ prefilledSearchString, prefilledSearchType, handleNoneRou
                         </DropdownButton>
                     </InputGroup>
                 </div>
-                <div className="col-5 col-md-3">
+                <div className="col-12 col-md-3 mt-3 mt-md-0">
                     <p className="lead">
                         <button
-                            className="btn btn-primary btn-lg"
+                            className="btn btn-primary btn-lg w-100"
                             onClick={handleSearchClick}
                         >Search</button>
                     </p>

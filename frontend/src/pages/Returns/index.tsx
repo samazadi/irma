@@ -30,7 +30,7 @@ const Returns = () => {
                     <h1 className="display-4">Return a Book</h1>
                     <p>Enter the ID of your book (you can find this on the spine of your book)</p>
                     <p className="mb-4"><small>i.e aa5b1c95-9e58-443a-b6d9-e04a49d1ea33</small></p>
-                    <div className="form-group col-4 mx-auto">
+                    <div className="form-group col-12 col-md-4 mx-auto">
                         <input
                             type="text"
                             placeholder="Book ID"
@@ -40,7 +40,7 @@ const Returns = () => {
                         {bookSuccessfullyReturned && <h3 className="text-success">All done!</h3>}
                         {bookReturnFailed && <h5 className="text-danger">It looks like something wen't wrong with your return... Please try later.</h5>}
                     </div>
-                    <div className="form-group col-4 mx-auto">
+                    <div className="form-group col-12 col-md-4 mx-auto">
                         <button
                             onClick={handleReturn}
                             className="btn btn-primary btn-lg w-100"

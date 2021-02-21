@@ -20,15 +20,19 @@ const Results = ({ books, handleBorrowBook }: BooksStateTableProps) => {
                 ]}
                 data={books as any}
                 actions={[
-                    {
-                        icon: 'save',
-                        tooltip: 'Borrow',
-                        onClick: (event, rowData) => handleBorrowBook(rowData)
+                    (rowData: Book) => {
+                        return ({
+                            icon: () => <button disabled={rowData?.status === "checked-out"} className="btn btn-primary">Borrow</button>,
+                            tooltip: 'Borrow',
+                            onClick: (event, rowData) => {
+                                if (!event.target.classList.contains('disabled')) {
+                                    handleBorrowBook(rowData);
+                                }
+                                event.target.classList.add('disabled');
+                            }
+                        })
                     }
                 ]}
-                components={{
-                    Action: props => <button disabled={props?.data?.status === "checked-out"} className="btn btn-primary" onClick={(event) => props.action.onClick(event, props.data)}>Borrow</button>
-                }}
                 title="Results"
                 icons={getMaterialTableIcons()}
                 options={{
