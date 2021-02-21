@@ -6,9 +6,10 @@ import { useHistory } from 'react-router-dom';
 interface SearchInputProps {
     prefilledSearchString?: string;
     prefilledSearchType?: SearchTypeValues;
+    handleNoneRoutingSearch?: (searchString: string, searchType: SearchTypeValues) => void;
 }
 
-const SearchInput = ({ prefilledSearchString, prefilledSearchType }: SearchInputProps) => {
+const SearchInput = ({ prefilledSearchString, prefilledSearchType, handleNoneRoutingSearch }: SearchInputProps) => {
     const history = useHistory();
     const [searchInput, setSearchInput] = useState<string>("");
     const [searchType, setSearchType] = useState<SearchTypeValues>("title");
@@ -22,7 +23,13 @@ const SearchInput = ({ prefilledSearchString, prefilledSearchType }: SearchInput
 
     const handleSearchClick = (): void => {
         if (!searchInput) return;
-        history.push(`/search/${searchInput}/${searchType}`);
+        
+        const pathnameParts = history.location.pathname.split('/');
+        if (pathnameParts[1] === "search" && handleNoneRoutingSearch) {
+            return handleNoneRoutingSearch(searchInput, searchType);
+        }
+        
+        return history.push(`/search/${searchInput}/${searchType}`);
     }
 
     const handleDropdownSelect = (value: string | null): void => {

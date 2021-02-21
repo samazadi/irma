@@ -3,7 +3,7 @@ import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import dbClient from '../clients/dbClient';
 import * as uuid from 'uuid';
-import { Actions, Activity, Book, GetActivitiesResponse, ScanResponse, SearchResults, SearchTypeValues, Status } from '../models/Book';
+import { Actions, Activity, Book, GetActivitiesResponse, ScanResponse, SearchParamGeneratorResponse, SearchResults, SearchTypeValues, Status } from '../models/Book';
 
 export default class BookRepository {
     constructor(
@@ -53,11 +53,11 @@ export default class BookRepository {
     }
 
     async searchBooks(searchString: string, searchType: SearchTypeValues): Promise<Book[]> {
-        const params: DocumentClient.QueryInput = this.searchBookQueryParamGenerator(searchString, searchType);
-        const result = await this.documentClient.query(params).promise();
-
-
-        // TODO: get the results from the helper function for mapping
+        const params: SearchParamGeneratorResponse = this.searchBookQueryParamGenerator(searchString, searchType);
+        let result = await this.documentClient.query(params.queryParams).promise();
+        if (!result.Items?.length) {
+            result = await this.documentClient.scan(params.scanParams).promise();
+        }
 
         return result.Items as Book[]
     }
@@ -77,10 +77,10 @@ export default class BookRepository {
         const newStatus: Status = action === "check-in" ? "available" : "checked-out";
 
         const book = await (await this.getBookById(id)).Items[0] as Book;
-        
+
         const { title, isbn } = book;
         const activityId = uuid.v4();
-        
+
         const activity: Activity = {
             id: activityId,
             bookId: id,
@@ -126,9 +126,9 @@ export default class BookRepository {
     }
 
     private getBookById(id: string) {
-        let params = this.searchBookQueryParamGenerator(id, "id");
-        
-        return this.documentClient.query(params).promise();
+        const params: SearchParamGeneratorResponse = this.searchBookQueryParamGenerator(id, "id");
+
+        return this.documentClient.query(params.queryParams).promise();
     }
 
     private createActivityForBook(activity: Activity) {
@@ -158,64 +158,113 @@ export default class BookRepository {
         return searchResults;
     }
 
-    private searchBookQueryParamGenerator(searchString: string, searchType: SearchTypeValues): DocumentClient.QueryInput {
+    private searchBookQueryParamGenerator(searchString: string, searchType: SearchTypeValues): SearchParamGeneratorResponse {
         const baseParams: DocumentClient.QueryInput = {
             TableName: this.irmaTable,
             Limit: 1000,
             Select: 'ALL_ATTRIBUTES'
         }
 
-        let params = {};
+        let queryParams = {};
+        let scanParams = {};
         switch (searchType) {
             case "author":
-                params = {
+                queryParams = {
                     IndexName: 'AuthorIndex',
                     KeyConditionExpression: 'author = :author',
                     ExpressionAttributeValues: {
                         ':author': searchString
                     },
                 }
+                scanParams = {
+                    FilterExpression: "contains(#author, :author_name)",
+                    ExpressionAttributeNames: {
+                        "#author": "author",
+                    },
+                    ExpressionAttributeValues: {
+                        ":author_name": searchString,
+                    }
+                }
                 break;
 
             case "id":
-                params = {
+                queryParams = {
                     KeyConditionExpression: 'id = :id',
                     ExpressionAttributeValues: {
                         ':id': searchString
                     }
-                };
+                }
+                scanParams = {
+                    FilterExpression: "contains(#id, :id)",
+                    ExpressionAttributeNames: {
+                        "#id": "id",
+                    },
+                    ExpressionAttributeValues: {
+                        ":id": searchString,
+                    }
+                }
                 break;
 
             case "isbn":
-                params = {
+                queryParams = {
                     IndexName: 'IsbnIndex',
                     KeyConditionExpression: 'isbn = :isbn',
                     ExpressionAttributeValues: {
                         ':isbn': searchString
                     },
                 }
+                scanParams = {
+                    FilterExpression: "contains(#isbn, :isbn)",
+                    ExpressionAttributeNames: {
+                        "#isbn": "isbn",
+                    },
+                    ExpressionAttributeValues: {
+                        ":isbn": searchString,
+                    }
+                }
                 break;
 
             case "title":
-                params = {
+                queryParams = {
                     IndexName: 'TitleIndex',
                     KeyConditionExpression: 'title = :title',
                     ExpressionAttributeValues: {
                         ':title': searchString
                     },
                 }
+                scanParams = {
+                    FilterExpression: "contains(#title, :title)",
+                    ExpressionAttributeNames: {
+                        "#title": "title",
+                    },
+                    ExpressionAttributeValues: {
+                        ":title": searchString,
+                    }
+                }
                 break;
 
             default:
-                params = {
+                queryParams = {
                     KeyConditionExpression: 'id = :id',
                     ExpressionAttributeValues: {
                         ':id': searchString
                     }
-                };
+                }
+                scanParams = {
+                    FilterExpression: "contains(#id, :id)",
+                    ExpressionAttributeNames: {
+                        "#id": "id",
+                    },
+                    ExpressionAttributeValues: {
+                        ":id": searchString,
+                    }
+                }
                 break;
         }
 
-        return { ...baseParams, ...params };
+        return {
+            queryParams: { ...baseParams, ...queryParams },
+            scanParams: { ...baseParams, ...scanParams }
+        };
     }
 }

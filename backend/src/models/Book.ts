@@ -1,3 +1,5 @@
+import { DocumentClient } from "aws-sdk/clients/dynamodb";
+
 export interface Book {
     id: string;
     title: string;
@@ -35,3 +37,8 @@ export interface GetActivitiesResponse {
 export type Actions = "check-out" | "check-in" | "donation"
 
 export type SearchTypeValues = "title" | "isbn" | "id" | "author";
+
+export interface SearchParamGeneratorResponse {
+    queryParams: DocumentClient.QueryInput,
+    scanParams: DocumentClient.ScanInput
+}

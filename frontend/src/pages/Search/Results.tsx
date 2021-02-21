@@ -4,10 +4,9 @@ import { getMaterialTableIcons } from '../../utils';
 
 interface BooksStateTableProps {
     books: Book[];
-    handlePageChange: () => void;
 }
 
-const Results = ({ books, handlePageChange }: BooksStateTableProps) => {
+const Results = ({ books }: BooksStateTableProps) => {
     return (
         <div className="shadow mt-3">
             <MaterialTable
@@ -21,7 +20,6 @@ const Results = ({ books, handlePageChange }: BooksStateTableProps) => {
                 data={books}
                 title="Results"
                 icons={getMaterialTableIcons()}
-                onChangePage={() => handlePageChange()}
                 options={{
                     pageSizeOptions: [],
                     showFirstLastPageButtons: false,

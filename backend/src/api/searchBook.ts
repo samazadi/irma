@@ -20,7 +20,7 @@ export const handler: APIGatewayProxyHandler = async (_event: APIGatewayProxyEve
             body: JSON.stringify(books)
         };
     } catch (error) {
-        console.error(`Error in getBook: ${error}`);
+        console.error(`Error in search: ${error}`);
         return {
             statusCode: 500,
             body: JSON.stringify({
