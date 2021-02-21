@@ -6,16 +6,12 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     try {
         const { id, action } = JSON.parse(event.body);
 
-        console.log("body:", event.body)
-
         const bookService = new BookService();
         const updatedBook = await bookService.update(id, action);
 
         return {
             statusCode: 200,
-            body: JSON.stringify({
-                book: updatedBook
-            })
+            body: JSON.stringify(updatedBook)
         }
     } catch (error) {
         console.error(`Error in updateBook: ${error}`);

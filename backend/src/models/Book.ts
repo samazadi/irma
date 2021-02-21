@@ -32,6 +32,6 @@ export interface GetActivitiesResponse {
     Activities: Activity[];
 }
 
-export type Actions = "check-out" | "check-in"
+export type Actions = "check-out" | "check-in" | "donation"
 
 export type SearchTypeValues = "title" | "isbn" | "id" | "author";

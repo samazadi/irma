@@ -36,7 +36,6 @@ export const returnBook = (update: UpdateBookParams): Promise<void> => {
 }
 
 export const searchForBook = (searchString: string, searchType: SearchTypeValues) => {
-    console.log("hit", searchString, searchType);
     return fetch(`${apiUrl}/${searchType}/${searchString}`)
         .then(response => response.json())
         .catch(error => console.error('Something went wrong...', error));

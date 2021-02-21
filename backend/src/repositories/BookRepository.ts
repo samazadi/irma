@@ -1,13 +1,11 @@
 import * as AWS from 'aws-sdk';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-import { exists } from 'fs';
+import { PromiseResult } from 'aws-sdk/lib/request';
 import dbClient from '../clients/dbClient';
+import * as uuid from 'uuid';
 import { Actions, Activity, Book, GetActivitiesResponse, ScanResponse, SearchResults, SearchTypeValues, Status } from '../models/Book';
 
 export default class BookRepository {
-    /**
-     *
-     */
     constructor(
         private readonly documentClient: DocumentClient = dbClient(),
         private readonly irmaTable = process.env.IRMA_DDB_TABLE,
@@ -58,12 +56,15 @@ export default class BookRepository {
         const params: DocumentClient.QueryInput = this.searchBookQueryParamGenerator(searchString, searchType);
         const result = await this.documentClient.query(params).promise();
 
+
         // TODO: get the results from the helper function for mapping
 
         return result.Items as Book[]
     }
 
-    async put(book: Book): Promise<Book> {
+    async put(book: Book, activity: Activity): Promise<Book> {
+        await this.createActivityForBook(activity);
+
         await this.documentClient.put({
             TableName: this.irmaTable,
             Item: book
@@ -72,23 +73,47 @@ export default class BookRepository {
         return book;
     }
 
-    async update(id: string, action: Actions): Promise<Book> {
+    async update(id: string, action: Actions): Promise<Book | AWS.AWSError> {
         const newStatus: Status = action === "check-in" ? "available" : "checked-out";
 
-        const updated = await this.documentClient.update({
+        const book = await (await this.getBookById(id)).Items[0] as Book;
+        
+        const { title, isbn } = book;
+        const activityId = uuid.v4();
+        
+        const activity: Activity = {
+            id: activityId,
+            bookId: id,
+            title,
+            isbn,
+            date: new Date().toUTCString(),
+            action
+        }
+
+        await this.createActivityForBook(activity);
+
+        const params: DocumentClient.UpdateItemInput = {
             TableName: this.irmaTable,
             Key: { 'id': id },
             UpdateExpression: 'SET #st = :value',
+            ConditionExpression: '#st = :status',
             ExpressionAttributeValues: {
-                ':value': newStatus
+                ':value': newStatus,
+                ':status': action === "check-in" ? "checked-out" : "available" // confirm the user can take action on this book
             },
             ExpressionAttributeNames: {
                 "#st": "status"
             },
             ReturnValues: 'ALL_NEW'
-        }).promise();
+        }
 
-        console.log("the updated value", updated)
+        let updated = null as PromiseResult<AWS.DynamoDB.DocumentClient.UpdateItemOutput, AWS.AWSError>
+
+        try {
+            updated = await this.documentClient.update(params).promise();
+        } catch (error) {
+            return error as AWS.AWSError;
+        }
 
         return updated.Attributes as Book;
     }
@@ -97,6 +122,19 @@ export default class BookRepository {
         return this.documentClient.delete({
             TableName: this.irmaTable,
             Key: { 'id': id }
+        }).promise();
+    }
+
+    private getBookById(id: string) {
+        let params = this.searchBookQueryParamGenerator(id, "id");
+        
+        return this.documentClient.query(params).promise();
+    }
+
+    private createActivityForBook(activity: Activity) {
+        return this.documentClient.put({
+            TableName: this.irmaActivitiesTable,
+            Item: activity
         }).promise();
     }
 

@@ -64,7 +64,7 @@ const Reports = () => {
                 </div>
 
                 <div className="row">
-                    <div className="col-12">
+                    <div className="col-12 mb-5">
                         <h3>Activity Log</h3>
                         <p>To get the activities of a book, enter the book ID</p>
                         {showToast && <p className="text-danger">No results found...</p>}

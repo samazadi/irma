@@ -1,6 +1,6 @@
 import * as uuid from 'uuid';
 import BookRepository from '../repositories/BookRepository';
-import { Actions, Book, GetActivitiesResponse, ScanResponse, SearchTypeValues } from '../models/Book';
+import { Actions, Activity, Book, GetActivitiesResponse, ScanResponse, SearchTypeValues } from '../models/Book';
 
 export default class BookService {
     bookRepostiroy: BookRepository;
@@ -22,16 +22,28 @@ export default class BookService {
     }
 
     async put(title: string, author: string, isbn: string, description: string): Promise<Book> {
-        const id = uuid.v4();
+        const bookId = uuid.v4();
+        const activityId = uuid.v4();
 
-        return await this.bookRepostiroy.put({
-            id,
+        const bookValues: Book = {
+            id: bookId,
             title,
             author,
             isbn,
             description,
             status: "available"
-        });
+        }
+
+        const bookActivity: Activity = {
+            id: activityId,
+            bookId,
+            title,
+            isbn,
+            date: new Date().toUTCString(),
+            action: "donation"
+        }
+
+        return await this.bookRepostiroy.put(bookValues, bookActivity);
     }
 
     async update(id: string, action: Actions) {

@@ -9,7 +9,6 @@ const Donate = () => {
     const { register, handleSubmit, errors, reset } = useForm<DonationFormValues>();
 
     const onSubmit: SubmitHandler<DonationFormValues> = data => {
-        console.log("handle hit", data)
         donateBook(data)
             .then(response => handleSuccessfulDonation())
             .catch(error => console.error("Error occured: ", error));
