@@ -11,7 +11,10 @@ const Returns = () => {
         if (!bookId) return;
         returnOrBorrowBook({ id: bookId, action: "check-in" })
             .then((response: any) => {
-                if (response?.code) {
+                setBookReturnFailed(false);
+                setBookSuccessfullyReturned(false);
+
+                if (response?.error) {
                     console.error(`An error occured: `, { 
                         ...response,
                         probableCause: 'If the book did not exist or was not checked out to begin with, you cant return it'

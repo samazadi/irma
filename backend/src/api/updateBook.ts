@@ -1,6 +1,8 @@
 import 'source-map-support/register';
 import { APIGatewayProxyHandler, APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import BookService from '../services/BookService';
+import { generateEmptyBook, instanceOfA } from '../util/instanceOfA';
+import { Book } from '../models/Book';
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
@@ -8,6 +10,10 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
         const bookService = new BookService();
         const updatedBook = await bookService.update(id, action);
+
+        if (!instanceOfA<Book>(generateEmptyBook(), Object.keys(updatedBook))) {
+            throw updatedBook;
+        }
 
         return {
             statusCode: 200,

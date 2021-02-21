@@ -1,4 +1,4 @@
-import { ScanResponse, GetActivitiesResponse, DonationFormValues, UpdateBookParams, SearchTypeValues } from '../types';
+import { ScanResponse, GetActivitiesResponse, DonationFormValues, UpdateBookParams, SearchTypeValues, Book } from '../types';
 import { apiUrl } from '../config';
 
 export const getBooks = (lastEvaluatedKey?: string): Promise<ScanResponse> => {
@@ -14,7 +14,7 @@ export const getBookActivities = (id: string): Promise<GetActivitiesResponse> =>
         .catch(error => console.error('Something went wrong getting activities...', error));
 }
 
-export const donateBook = (bookDetails: DonationFormValues): Promise<void> => {
+export const donateBook = (bookDetails: DonationFormValues): Promise<Book> => {
     const params: RequestInit = {
         method: 'POST',
         body: JSON.stringify({ ...bookDetails })
@@ -24,7 +24,7 @@ export const donateBook = (bookDetails: DonationFormValues): Promise<void> => {
         .catch(error => console.error('Something went wrong making a donation...', error));
 }
 
-export const returnOrBorrowBook = (update: UpdateBookParams): Promise<void> => {
+export const returnOrBorrowBook = (update: UpdateBookParams): Promise<Book> => {
     const params: RequestInit = {
         method: 'POST',
         body: JSON.stringify({ ...update })
@@ -35,7 +35,7 @@ export const returnOrBorrowBook = (update: UpdateBookParams): Promise<void> => {
         .catch(error => console.error('Something went wrong returning a book...', error));
 }
 
-export const searchForBook = (searchString: string, searchType: SearchTypeValues) => {
+export const searchForBook = (searchString: string, searchType: SearchTypeValues): Promise<Book[]> => {
     return fetch(`${apiUrl}/search/${searchType}/${searchString}`)
         .then(response => response.json())
         .catch(error => console.error('Something went wrong...', error));

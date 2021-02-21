@@ -11,7 +11,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
         return {
             statusCode: 200,
-            body: JSON.stringify({ book }, null, 2)
+            body: JSON.stringify(book, null, 2)
         };
     } catch (error) {
         console.error(`Error in createBook: ${error}`);

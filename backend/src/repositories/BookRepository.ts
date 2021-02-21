@@ -76,46 +76,46 @@ export default class BookRepository {
     async update(id: string, action: Actions): Promise<Book | AWS.AWSError> {
         const newStatus: Status = action === "check-in" ? "available" : "checked-out";
 
-        const book = await (await this.getBookById(id)).Items[0] as Book;
-
-        const { title, isbn } = book;
-        const activityId = uuid.v4();
-
-        const activity: Activity = {
-            id: activityId,
-            bookId: id,
-            title,
-            isbn,
-            date: new Date().toUTCString(),
-            action
-        }
-
-        await this.createActivityForBook(activity);
-
-        const params: DocumentClient.UpdateItemInput = {
-            TableName: this.irmaTable,
-            Key: { 'id': id },
-            UpdateExpression: 'SET #st = :value',
-            ConditionExpression: '#st = :status',
-            ExpressionAttributeValues: {
-                ':value': newStatus,
-                ':status': action === "check-in" ? "checked-out" : "available" // confirm the user can take action on this book
-            },
-            ExpressionAttributeNames: {
-                "#st": "status"
-            },
-            ReturnValues: 'ALL_NEW'
-        }
-
-        let updated = null as PromiseResult<AWS.DynamoDB.DocumentClient.UpdateItemOutput, AWS.AWSError>
-
         try {
+            const book = await (await this.getBookById(id)).Items[0] as Book;
+
+            const { title, isbn } = book;
+            const activityId = uuid.v4();
+
+            const activity: Activity = {
+                id: activityId,
+                bookId: id,
+                title,
+                isbn,
+                date: new Date().toUTCString(),
+                action
+            }
+
+            await this.createActivityForBook(activity);
+
+            const params: DocumentClient.UpdateItemInput = {
+                TableName: this.irmaTable,
+                Key: { 'id': id },
+                UpdateExpression: 'SET #st = :value',
+                ConditionExpression: '#st = :status',
+                ExpressionAttributeValues: {
+                    ':value': newStatus,
+                    ':status': action === "check-in" ? "checked-out" : "available" // confirm the user can take action on this book
+                },
+                ExpressionAttributeNames: {
+                    "#st": "status"
+                },
+                ReturnValues: 'ALL_NEW'
+            }
+
+            let updated = null as PromiseResult<AWS.DynamoDB.DocumentClient.UpdateItemOutput, AWS.AWSError>
+
             updated = await this.documentClient.update(params).promise();
+
+            return updated.Attributes as Book;
         } catch (error) {
             return error as AWS.AWSError;
         }
-
-        return updated.Attributes as Book;
     }
 
     async delete(id: string): Promise<AWS.DynamoDB.DocumentClient.DeleteItemOutput | AWS.AWSError> {
