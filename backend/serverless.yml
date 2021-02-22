@@ -47,6 +47,7 @@ functions:
       - http:
           method: post
           path: library
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -58,10 +59,12 @@ functions:
     events:
       - http:
           method: get
-          path: library
+          path: library/{id}
+          cors: true
       - http:
           method: get
-          path: library/{lastEvaluatedKey}
+          path: library
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -73,16 +76,8 @@ functions:
     events:
       - http:
           method: get
-          path: library/search/id/{id}
-      - http:
-          method: get
-          path: library/search/isbn/{isbn}
-      - http:
-          method: get
-          path: library/search/title/{title}
-      - http:
-          method: get
-          path: library/search/author/{author}
+          path: library/search/{type}/{id}
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -95,6 +90,7 @@ functions:
       - http:
           method: post
           path: library/update
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -107,6 +103,7 @@ functions:
       - http:
           method: delete
           path: library/{id}
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -119,6 +116,7 @@ functions:
       - http:
           method: get
           path: library/activities/{bookId}
+          cors: true
     iamRoleStatements:
       - Effect: Allow
         Action:

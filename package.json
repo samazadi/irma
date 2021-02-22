@@ -1,0 +1,31 @@
+{
+  "name": "irma",
+  "version": "1.0.0",
+  "description": "Irma Hogwarts Library Web Portal",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm i && (cd frontend && npm i) && (cd backend && npm i)",
+    "start:frontend": "cd frontend && npm start",
+    "start:backend": "cd backend && export DEBUG=true && sls offline start",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "deploy:frontend": "cd frontend && (npm run build) && (aws s3 sync build/ s3://irma-dev)",
+    "deploy:backend": "cd backend && sls deploy",
+    "deploy": "concurrently \"npm run deploy:backend\" \"npm run deploy:frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samazadi/irma.git"
+  },
+  "keywords": [
+    "irma"
+  ],
+  "author": "Sam Ghodrati-Azadi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samazadi/irma/issues"
+  },
+  "homepage": "https://github.com/samazadi/irma#readme",
+  "devDependencies": {
+    "concurrently": "^6.0.0"
+  }
+}

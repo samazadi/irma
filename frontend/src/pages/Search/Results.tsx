@@ -38,7 +38,8 @@ const Results = ({ books, handleBorrowBook }: BooksStateTableProps) => {
                 options={{
                     pageSizeOptions: [],
                     showFirstLastPageButtons: false,
-                    search: false
+                    search: false,
+                    actionsColumnIndex: -1
                 }}
             />
         </div>

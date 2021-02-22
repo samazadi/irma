@@ -11,7 +11,11 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
         return {
             statusCode: 200,
-            body: ''
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+            },
+            body: 'OK'
         }
     } catch (error) {
         console.error(`Error in deleteBook: ${error}`);

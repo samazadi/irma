@@ -7,10 +7,14 @@ export const handler: APIGatewayProxyHandler = async (_event: APIGatewayProxyEve
         const { pathParameters } = _event;
         
         const bookService = new BookService();
-        const books = await bookService.get(pathParameters?.lastEvaluatedKey);
+        const books = await bookService.get(pathParameters?.id);
 
         return {
             statusCode: 200,
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+            },
             body: JSON.stringify({
                 ...books
             })

@@ -1,1 +1,1 @@
-export const apiUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:3333/dev/library' : 'http://localhost:3333/dev/library';
+export const apiUrl = process.env.NODE_ENV !== 'production' ? 'http://localhost:3333/dev/library' : 'https://a2c9w4n4ff.execute-api.us-east-1.amazonaws.com/dev/library';
