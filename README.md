@@ -23,6 +23,14 @@ npm run start
 
 You can find a [postman collection](https://github.com/samazadi/irma/blob/main/Irma.postman_collection.json) to hit the API directly in the root of this project.
 
+## Deployments
+
+_*requires [serverless framework](https://www.serverless.com/) installed as well as the AWS CLI_
+
+```sh
+npm run deploy
+```
+
 ## Architecture
 <p>
 <img src='https://sam-misc-assets.s3.amazonaws.com/irma_arch_compressed.png' width='700' alt='Irma architecture'>
@@ -59,5 +67,3 @@ Next I reviewed the read/write patterns. The limited amount of complex queries I
 I decided to continue with DynamoDB because I knew the data would be very limited starting off, and if it were to grow, ElasticSearch can be easily integrated with DynamoDB to offload the expensive search queries.
 
 I also made sure to implement a repository to abstract any communication with the database, allowing me to change the database if needed with minimal code changes.
-
-
