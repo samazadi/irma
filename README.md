@@ -16,4 +16,3 @@ cd irma
 npm run install:all
 npm run start
 ```
-
