@@ -3,7 +3,7 @@ import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import dbClient from '../clients/dbClient';
 import * as uuid from 'uuid';
-import { Actions, Activity, Book, GetActivitiesResponse, ScanResponse, SearchParamGeneratorResponse, SearchResults, SearchTypeValues, Status } from '../models/Book';
+import { Actions, Activity, Book, GetActivitiesResponse, ScanResponse, SearchParamGeneratorResponse, SearchTypeValues, Status } from '../models';
 
 export default class BookRepository {
     constructor(
@@ -119,10 +119,30 @@ export default class BookRepository {
     }
 
     async delete(id: string): Promise<AWS.DynamoDB.DocumentClient.DeleteItemOutput | AWS.AWSError> {
-        return this.documentClient.delete({
-            TableName: this.irmaTable,
-            Key: { 'id': id }
-        }).promise();
+        try {
+            const book = await (await this.getBookById(id)).Items[0] as Book;
+
+            const { title, isbn } = book;
+            const activityId = uuid.v4();
+
+            const activity: Activity = {
+                id: activityId,
+                bookId: id,
+                title,
+                isbn,
+                date: new Date().toUTCString(),
+                action: "delete"
+            }
+
+            await this.createActivityForBook(activity);
+
+            return this.documentClient.delete({
+                TableName: this.irmaTable,
+                Key: { 'id': id }
+            }).promise();
+        } catch (error) {
+            return error as AWS.AWSError;
+        }
     }
 
     private getBookById(id: string) {

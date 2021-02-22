@@ -1,6 +1,6 @@
 import * as uuid from 'uuid';
 import BookRepository from '../repositories/BookRepository';
-import { Actions, Activity, Book, GetActivitiesResponse, ScanResponse, SearchTypeValues } from '../models/Book';
+import { Actions, Activity, Book, GetActivitiesResponse, ScanResponse, SearchTypeValues } from '../models';
 
 export default class BookService {
     bookRepostiroy: BookRepository;

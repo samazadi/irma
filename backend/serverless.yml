@@ -53,13 +53,16 @@ functions:
         Action:
           - dynamodb:PutItem
         Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_DDB_TABLE}
-
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_ACTIVITIES_DDB_TABLE}
   getBooks:
     handler: src/api/getBook.handler
     events:
       - http:
           method: get
-          path: library/{id}
+          path: library/{id} # id of last item, used for pagination
           cors: true
       - http:
           method: get
@@ -82,6 +85,7 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:Scan
+          - dynamodb:Query
         Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_DDB_TABLE}
 
   updateBook:
@@ -95,7 +99,12 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
+          - dynamodb:Query
         Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_DDB_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_ACTIVITIES_DDB_TABLE}
 
   deleteBook:
     handler: src/api/deleteBook.handler
@@ -108,7 +117,12 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:DeleteItem
+          - dynamodb:Query
         Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_DDB_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_ACTIVITIES_DDB_TABLE}
 
   getBookActivities:
     handler: src/api/getBookActivities.handler
@@ -120,8 +134,8 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
-          - dynamodb:Scan
-        Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_ACTIVITIES_DDB_TABLE}
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:us-east-1:*:table/${self:provider.environment.IRMA_ACTIVITIES_DDB_TABLE}/index/BookIdIndex
 
 resources:
   Resources:

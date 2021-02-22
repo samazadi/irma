@@ -1,4 +1,4 @@
-import { Book } from "../models/Book";
+import { Book } from "../models";
 
 export const instanceOfA = <T>(object: T, membersToTest: string[]): boolean => {
     if (!membersToTest.length || membersToTest.some(member => !(member in object))) return false;

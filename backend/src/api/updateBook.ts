@@ -2,7 +2,7 @@ import 'source-map-support/register';
 import { APIGatewayProxyHandler, APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import BookService from '../services/BookService';
 import { generateEmptyBook, instanceOfA } from '../util/instanceOfA';
-import { Book } from '../models/Book';
+import { Book } from '../models';
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
