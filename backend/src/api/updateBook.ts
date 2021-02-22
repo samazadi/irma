@@ -1,7 +1,7 @@
 import 'source-map-support/register';
 import { APIGatewayProxyHandler, APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import BookService from '../services/BookService';
-import { generateEmptyBook, instanceOfA } from '../util/instanceOfA';
+import { generateEmptyBook, getResponseHeaders, instanceOfA } from '../util';
 import { Book } from '../models';
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
@@ -17,16 +17,14 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
         return {
             statusCode: 200,
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Credentials': true,
-            },
+            headers: getResponseHeaders(),
             body: JSON.stringify(updatedBook)
         }
     } catch (error) {
         console.error(`Error in updateBook: ${error}`);
         return {
             statusCode: 500,
+            headers: getResponseHeaders(),
             body: JSON.stringify({
                 error: error.message || "Something went wrong..."
             })

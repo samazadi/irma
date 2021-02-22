@@ -5,7 +5,7 @@ export const instanceOfA = <T>(object: T, membersToTest: string[]): boolean => {
     return true;
 };
 
-export const generateEmptyBook = () => {
+export const generateEmptyBook = (): Book => {
     return {
         id: "",
         title: "",
@@ -14,4 +14,11 @@ export const generateEmptyBook = () => {
         description: "",
         status: "available"
     } as Book;
+}
+
+export const getResponseHeaders = (): { [header: string]: string | number | boolean; } => {
+    return {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+    }
 }
