@@ -34,7 +34,7 @@ export interface Activity {
     title: string;
     isbn: string;
     date: string;
-    action: "check-out" | "check-in" | "donation"
+    action: "check-out" | "check-in" | "donation" | "delete"
 }
 
 export interface ScanResponse {

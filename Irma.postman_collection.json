@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "3ea3459d-9525-48ab-b092-0748905d579d",
+		"name": "Irma",
+		"description": "Irma Hogwarts Library Web Portal collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createBook",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"my title\",\n    \"author\": \"some author\",\n    \"isbn\": \"1234567890\",\n    \"description\": \"some description about my title\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{devUrl}}",
+					"host": [
+						"{{devUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getBooks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{devUrl}}",
+					"host": [
+						"{{devUrl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "searchBooks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{devUrl}}/search/id/a90cab7f-c599-4529-9207-e2a1e78beff0",
+					"host": [
+						"{{devUrl}}"
+					],
+					"path": [
+						"search",
+						"id",
+						"a90cab7f-c599-4529-9207-e2a1e78beff0"
+					]
+				},
+				"description": "Used to search for books. First URL path var is used for search type (id, author, title, isbn) and second is the search string "
+			},
+			"response": []
+		},
+		{
+			"name": "updateBook",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"a90cab7f-c599-4529-9207-e2a1e78beff0\",\n    \"action\": \"check-out\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{devUrl}}/update",
+					"host": [
+						"{{devUrl}}"
+					],
+					"path": [
+						"update"
+					]
+				},
+				"description": "Used to update the status of a book (available/checked-out). It accepts two values in the body:\n{\n    \"id\": \"\", // the id of the book\n    \"action\": \"\" // check-out | check-in\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "deleteBook",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{devUrl}}/a90cab7f-c599-4529-9207-e2a1e78beff0",
+					"host": [
+						"{{devUrl}}"
+					],
+					"path": [
+						"a90cab7f-c599-4529-9207-e2a1e78beff0"
+					]
+				},
+				"description": "Delete book by ID. Only exposed via API and not through web UI"
+			},
+			"response": []
+		},
+		{
+			"name": "getBookActivities",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{devUrl}}/activities/a90cab7f-c599-4529-9207-e2a1e78beff0",
+					"host": [
+						"{{devUrl}}"
+					],
+					"path": [
+						"activities",
+						"a90cab7f-c599-4529-9207-e2a1e78beff0"
+					]
+				},
+				"description": "Gets the activities of a book by ID"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "localUrl",
+			"value": "http://localhost:3333/dev/library"
+		},
+		{
+			"key": "devUrl",
+			"value": "https://a2c9w4n4ff.execute-api.us-east-1.amazonaws.com/dev/library"
+		}
+	]
+}
